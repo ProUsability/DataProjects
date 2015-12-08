@@ -1,5 +1,5 @@
 # MacbookAir Filepath
-pfile = "//Users//thomas//Desktop//Mozilla2.txt"
+pfile = "//Users//thomas//Desktop//MyText.txt"
 
 
 # Input file

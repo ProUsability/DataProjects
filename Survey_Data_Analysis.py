@@ -1,5 +1,5 @@
 # MacbookAir Filepath
-pfile = "//Users//thomas//Desktop//Mozilla2.txt"
+pfile = "//Users//thomas//Desktop//VideoSurveyAll.csv"
 
 
 # Input file
