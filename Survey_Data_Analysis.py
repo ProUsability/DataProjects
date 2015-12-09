@@ -6,14 +6,15 @@ pfile = "C:\\Users\\G1_SNIPA\\Desktop\\DataProjects\\VideoSurveyAll.csv"
 
 
 import csv
-
-# library for parsing out user_agent data
+import datetime
 from user_agents import parse
 
 count = 0
 notPC = 0
 bots = 0
 notPrimary = 0
+totalSecondsSpent = 0
+sampleSize = 0
 
 # Input file
 pfile
@@ -54,18 +55,24 @@ with open(pfile, 'rb') as csvfile:
             
             
             # calculate time spent per user
+            started = datetime.datetime.strptime(line[2], '%m/%d/%Y %H:%M:%S') # converts start time to datetime object
+            finished = datetime.datetime.strptime(line[3], '%m/%d/%Y %H:%M:%S') # converts end time to datetime object
+            delta = finished - started # calculates difference between start & finish time
+            secondsSpent = delta.seconds # converts time difference to seconds
+            totalSecondsSpent += secondsSpent # tallies total seconds spent by all participants
             
             # count versioning for both browsers
             
             # Find the longest data value per column to make uploading to mysql easier
             
+            sampleSize += 1 # tracks total eligible participants
             
             print browserData
             
             
         
 
-
+print 'All done!'
 
 
 
