@@ -32,9 +32,8 @@ crPlugins = {}
 crOS = {}
 ffxOS = {}
 
-crOSVersion = {}
-ffxOSVersion = {}
-
+#crOSVersion = {}
+#ffxOSVersion = {}
 
 #crFlashVersion = {}
 #ffxFlashVersion = {}
@@ -91,8 +90,10 @@ with open(pfile, 'rb') as csvfile:
             
             # gets browser versions            
             version = browserData.version_string
+            
             osFamily = operatingSystem.family
-            osVersion = operatingSystem.version_string
+            
+            #osVersion = operatingSystem.version_string
             
             #flashversion = line[15]
             
@@ -102,13 +103,13 @@ with open(pfile, 'rb') as csvfile:
             if prefBrowser == 'Chrome':
                 dictionaryIncrementer(version,crBrowserVersion) # counts browser version
                 dictionaryIncrementer(osFamily,crOS) # counts operating system family
-                dictionaryIncrementer(osVersion,crOSVersion) # counts operating system versioning
+                #dictionaryIncrementer(osVersion,crOSVersion) # counts operating system versioning
                 for plugin in plugins:
                     dictionaryIncrementer(plugin,crPlugins) # counts plugins
             else: # if prefBrowser == 'Firefox':
                 dictionaryIncrementer(version,ffxBrowserVersion)
                 dictionaryIncrementer(osFamily,ffxOS)
-                dictionaryIncrementer(osVersion,ffxOSVersion)
+                #dictionaryIncrementer(osVersion,ffxOSVersion)
                 for plugin in plugins:
                     dictionaryIncrementer(plugin,ffxPlugins)
                 
