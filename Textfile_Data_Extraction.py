@@ -1,5 +1,8 @@
 # MacbookAir Filepath
-pfile = "//Users//thomas//Desktop//MyText.txt"
+#pfile = "//Users//thomas//Desktop//MyText.txt"
+
+# Desktop Filepath
+pfile = "C:\\Users\\G1_SNIPA\\Desktop\\DataProjects\\MyText.txt"
 
 
 # Input file
@@ -48,7 +51,4 @@ print 'The number of unique words is: ' + str(len(wordsDict))
 
 #maximum length of a word
 print 'The longest word is: ' + str(longestWord)
-
-
-print "cool!"
 

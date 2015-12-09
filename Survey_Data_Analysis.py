@@ -1,6 +1,8 @@
 # MacbookAir Filepath
-pfile = "//Users//thomas//Desktop//VideoSurveyAll.csv"
+#pfile = "//Users//thomas//Desktop//VideoSurveyAll.csv"
 
+# Desktop Filepath
+pfile = "C:\\Users\\G1_SNIPA\\Desktop\\DataProjects\\VideoSurveyAll.csv"
 
 # Input file
 fnamemaster = pfile
