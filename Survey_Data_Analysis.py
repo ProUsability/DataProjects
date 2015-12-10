@@ -1,13 +1,26 @@
-# MacbookAir Filepath
-#pfile = "//Users//thomas//Desktop//VideoSurveyAll.csv"
+'''
+Script to extract survey data from a CSV file and upload it into a local MySQL database for analysis with R.
 
-# Desktop Filepath
-pfile = "C:\\Users\\G1_SNIPA\\Desktop\\DataProjects\\VideoSurveyAll.csv"
+Written by Thomas Lennig
+Started December 7th, 2015
+'''
 
 
+
+import MySQLdb
 import csv
 import datetime
 from user_agents import parse
+
+# connects to MySQL database, creates table for data upload
+connection = MySQLdb.connect(host='localhost',user='root',passwd='admin',db='test')
+cursor = connection.cursor()
+command ='''CREATE TABLE testtable1(
+row int unsigned not null auto_increment,
+participant int unsigned not null,
+primary key (row)) engine=innodb;
+'''
+cursor.execute(command)
 
 # function checks a dictionary for a value, increments the value or initializes it into the dict with a count of 1
 def dictionaryIncrementer(value, dictionary):
@@ -15,6 +28,8 @@ def dictionaryIncrementer(value, dictionary):
         dictionary[value] = 1
     else:
         dictionary[value] += 1    
+        
+# need function to parse the first two lines of the CSV file to determine the questions and answer options
 
 count = 0
 notPC = 0
@@ -40,8 +55,14 @@ ffxOS = {}
 
 
 
-# Input file
-pfile
+# Input files
+
+# MacbookAir Filepath
+#pfile = "//Users//thomas//Desktop//VideoSurveyAll.csv"
+
+# Desktop Filepath
+pfile = "C:\\Users\\G1_SNIPA\\Desktop\\DataProjects\\VideoSurveyAll.csv"
+
 with open(pfile, 'rb') as csvfile:
     lines = csv.reader(csvfile, delimiter=',', quotechar='"')
     
@@ -53,7 +74,7 @@ with open(pfile, 'rb') as csvfile:
         print count
         count += 1        
         
-        # Function for reading in the first two lines of data to determine the questions and answer options.
+        # Need for reading in the first two lines to determine the questions and answer options.
         if count == 1:
             continue
         elif count == 2:
@@ -122,8 +143,6 @@ with open(pfile, 'rb') as csvfile:
             
             print browserData
             
-            
-        
 
 print 'All done!'
 
