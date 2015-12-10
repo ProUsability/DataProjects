@@ -1,5 +1,5 @@
 '''
-Script to extract survey data from a CSV file and upload it into a local MySQL database for analysis with R.
+Extract survey data from a CSV file and uploads it into a local MySQL database for analysis with R.
 
 Written by Thomas Lennig
 Started December 7th, 2015
@@ -15,9 +15,15 @@ from user_agents import parse
 # connects to MySQL database, creates table for data upload
 connection = MySQLdb.connect(host='localhost',user='root',passwd='admin',db='test')
 cursor = connection.cursor()
+
+command ='''DROP TABLE IF EXISTS testtable1'''
+cursor.execute(command)
+
 command ='''CREATE TABLE testtable1(
 row int unsigned not null auto_increment,
 participant int unsigned not null,
+primaryBrowser varchar(20),
+operatingSystem varchar(20),
 primary key (row)) engine=innodb;
 '''
 cursor.execute(command)
@@ -47,15 +53,7 @@ crPlugins = {}
 crOS = {}
 ffxOS = {}
 
-#crOSVersion = {}
-#ffxOSVersion = {}
-
-#crFlashVersion = {}
-#ffxFlashVersion = {}
-
-
-
-# Input files
+# Input filepaths
 
 # MacbookAir Filepath
 #pfile = "//Users//thomas//Desktop//VideoSurveyAll.csv"
@@ -74,14 +72,13 @@ with open(pfile, 'rb') as csvfile:
         print count
         count += 1        
         
-        # Need for reading in the first two lines to determine the questions and answer options.
+        # Need function for reading in the first two lines to determine the questions and answer options.
         if count == 1:
             continue
         elif count == 2:
             continue
         else:
             # user_agent library for deciphering strings
-            # user_agent = parse(line[4]) # parses using data from "User Agent" field
             user_agent_ext = parse(line[5]) # parses using data from "User Agent Extended" field
             
             if user_agent_ext.is_bot: # Skips if it's a bot
@@ -112,11 +109,8 @@ with open(pfile, 'rb') as csvfile:
             # gets browser versions            
             version = browserData.version_string
             
+            # gets operating system name + version 
             osFamily = operatingSystem.family
-            
-            #osVersion = operatingSystem.version_string
-            
-            #flashversion = line[15]
             
             # count plugins for both browsers
             plugins = line[17].split(',')
@@ -124,13 +118,11 @@ with open(pfile, 'rb') as csvfile:
             if prefBrowser == 'Chrome':
                 dictionaryIncrementer(version,crBrowserVersion) # counts browser version
                 dictionaryIncrementer(osFamily,crOS) # counts operating system family
-                #dictionaryIncrementer(osVersion,crOSVersion) # counts operating system versioning
                 for plugin in plugins:
                     dictionaryIncrementer(plugin,crPlugins) # counts plugins
             else: # if prefBrowser == 'Firefox':
                 dictionaryIncrementer(version,ffxBrowserVersion)
                 dictionaryIncrementer(osFamily,ffxOS)
-                #dictionaryIncrementer(osVersion,ffxOSVersion)
                 for plugin in plugins:
                     dictionaryIncrementer(plugin,ffxPlugins)
                 
