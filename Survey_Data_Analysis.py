@@ -5,7 +5,7 @@ Written by Thomas Lennig
 Started December 7th, 2015
 '''
 
-
+# temporary mac mysql db pw or85ef;irF_%
 
 import MySQLdb
 import csv
