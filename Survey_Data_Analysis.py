@@ -14,18 +14,14 @@ from user_agents import parse
 
 # connects to MySQL database, creates table for data upload
 connection = MySQLdb.connect(host='localhost',user='root',passwd='admin',db='test')
+connection.autocommit(True)
 cursor = connection.cursor()
 
-command ='''DROP TABLE IF EXISTS testtable1'''
+command = "DROP TABLE IF EXISTS testtable1"
 cursor.execute(command)
 
-command ='''CREATE TABLE testtable1(
-row int unsigned not null auto_increment,
-participant int unsigned not null,
-primaryBrowser varchar(20),
-operatingSystem varchar(20),
-primary key (row)) engine=innodb;
-'''
+# need to break this up vertically
+command = "CREATE TABLE testtable1(row int unsigned not null auto_increment, participant int unsigned not null, primaryBrowser varchar(20), browserVersion varchar(20), operatingSystem varchar(20), primary key (row)) engine=innodb;"
 cursor.execute(command)
 
 # function checks a dictionary for a value, increments the value or initializes it into the dict with a count of 1
@@ -43,6 +39,7 @@ bots = 0
 notPrimary = 0
 totalSecondsSpent = 0
 sampleSize = 0
+countIntoMySQL = 0
 
 ffxBrowserVersion = {}
 crBrowserVersion = {}
@@ -106,11 +103,13 @@ with open(pfile, 'rb') as csvfile:
             secondsSpent = delta.seconds # converts time difference to seconds
             totalSecondsSpent += secondsSpent # tallies total seconds spent by all participants
             
+            participant = int(line[1])
+            
             # gets browser versions            
             version = browserData.version_string
             
             # gets operating system name + version 
-            osFamily = operatingSystem.family
+            osFamily = str(operatingSystem.family)
             
             # count plugins for both browsers
             plugins = line[17].split(',')
@@ -133,9 +132,21 @@ with open(pfile, 'rb') as csvfile:
             
             sampleSize += 1 # tracks total eligible participants
             
+            insertCommand ="INSERT INTO testtable1 SET participant=%s, primaryBrowser='%s', browserVersion='%s',operatingSystem='%s';"
+            
+            insertCommand = insertCommand % (participant,prefBrowser,version,osFamily)
+            
+            try:
+                cursor.execute(insertCommand)
+                countIntoMySQL += 1
+            except Exception as error:
+                print error
+            
             print browserData
             
 
+
+print 'Inserted into MySQL: ' + int(countIntoMySQL)
 print 'All done!'
 
 
