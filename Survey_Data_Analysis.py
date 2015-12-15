@@ -17,11 +17,18 @@ connection = MySQLdb.connect(host='localhost',user='root',passwd='admin',db='tes
 connection.autocommit(True)
 cursor = connection.cursor()
 
+# cleans up (removes) previous table.
 command = "DROP TABLE IF EXISTS testtable1"
 cursor.execute(command)
 
 # need to break this up vertically
-command = "CREATE TABLE testtable1(row int unsigned not null auto_increment, participant int unsigned not null, primaryBrowser varchar(20), browserVersion varchar(20), operatingSystem varchar(20), primary key (row)) engine=innodb;"
+command = ("CREATE TABLE testtable1("
+           + "row int unsigned not null auto_increment, "
+           + "participant int unsigned not null, "
+           + "primaryBrowser varchar(20), "
+           + "browserVersion varchar(20), "
+           + "operatingSystem varchar(20), "
+           + "primary key (row)) engine=innodb;")
 cursor.execute(command)
 
 # function checks a dictionary for a value, increments the value or initializes it into the dict with a count of 1
@@ -66,10 +73,17 @@ with open(pfile, 'rb') as csvfile:
         print line
         print len(line)
         
-        print count
-        count += 1        
+        count += 1
+        #print count
+                
+        '''
+        MAJOR MISSING PART:
+        #####################################################################################################################
+        # Need function that reads in the first two lines then determines the questions, answer options, and their indices. #
+        #####################################################################################################################
         
-        # Need function for reading in the first two lines to determine the questions and answer options.
+        '''
+        
         if count == 1:
             continue
         elif count == 2:
@@ -85,7 +99,8 @@ with open(pfile, 'rb') as csvfile:
             if user_agent_ext.is_pc is False: # Skips if not on desktop
                 notPC += 1
                 continue
-
+            
+            # gets current browser data from user agents
             browserData = user_agent_ext.browser
             
             prefBrowser = line[9] # gets the preferred (primary) browser
@@ -93,6 +108,7 @@ with open(pfile, 'rb') as csvfile:
             if browserData.family != prefBrowser: # Skips if current browser is not primary broser
                 notPrimary += 1
                 continue                
+            
             
             operatingSystem = user_agent_ext.os # gets the operating system information
             
@@ -132,21 +148,33 @@ with open(pfile, 'rb') as csvfile:
             
             sampleSize += 1 # tracks total eligible participants
             
-            insertCommand ="INSERT INTO testtable1 SET participant=%s, primaryBrowser='%s', browserVersion='%s',operatingSystem='%s';"
+
+            # mysql upload template for data insertion
+            insertCommand = ("INSERT INTO testtable1 SET "
+            + "participant=%s,"
+            + "primaryBrowser='%s',"
+            + "browserVersion='%s',"
+            + "operatingSystem='%s';"
+            )
             
-            insertCommand = insertCommand % (participant,prefBrowser,version,osFamily)
+            # populates mysql template with data for row insertion            
+            insertCommand = insertCommand % (participant,
+                                             prefBrowser,
+                                             version,
+                                             osFamily)
             
+            # Tries to upload row or catches and prints error
             try:
                 cursor.execute(insertCommand)
                 countIntoMySQL += 1
             except Exception as error:
                 print error
             
-            print browserData
+            #print browserData
             
 
 
-print 'Inserted into MySQL: ' + int(countIntoMySQL)
+print 'Inserted into MySQL: ' + str(countIntoMySQL)
 print 'All done!'
 
 

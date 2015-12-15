@@ -12,4 +12,4 @@
 
 #SELECT primaryBrowser, browserVersion, COUNT(*) from testtable1 GROUP BY primaryBrowser, browserVersion ORDER BY primaryBrowser, browserVersion;
 
-SELECT primaryBrowser, operatingSystem, COUNT(*) from testtable1 GROUP BY primaryBrowser, operatingSystem ORDER BY primaryBrowser, operatingSystem;
+#SELECT primaryBrowser, operatingSystem, COUNT(*) from testtable1 GROUP BY primaryBrowser, operatingSystem ORDER BY primaryBrowser, operatingSystem;
