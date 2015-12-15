@@ -25,6 +25,7 @@ cursor.execute(command)
 command = ("CREATE TABLE testtable1("
            + "row int unsigned not null auto_increment, "
            + "participant int unsigned not null, "
+           + "secondsTOT int unsigned not null, "
            + "primaryBrowser varchar(20), "
            + "browserVersion varchar(20), "
            + "operatingSystem varchar(20), "
@@ -153,6 +154,7 @@ with open(pfile, 'rb') as csvfile:
             # mysql upload template for data insertion
             insertCommand = ("INSERT INTO testtable1 SET "
             + "participant=%s,"
+            + "secondsTOT=%s,"
             + "primaryBrowser='%s',"
             + "browserVersion='%s',"
             + "operatingSystem='%s';"
@@ -160,6 +162,7 @@ with open(pfile, 'rb') as csvfile:
             
             # populates mysql template with data for row insertion            
             insertCommand = insertCommand % (participant,
+                                             secondsSpent,
                                              prefBrowser,
                                              version,
                                              osFamily)
