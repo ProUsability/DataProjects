@@ -1,10 +1,10 @@
 #CREATE DATABASE test;
 
-#CREATE TABLE testtable1;
-
-#DROP TABLE testtable1;
-
 #USE test;
+
+#DROP TABLE IF EXISTS testtable1;
+
+#CREATE TABLE testtable1;
 
 #SELECT * FROM testtable1;
 
