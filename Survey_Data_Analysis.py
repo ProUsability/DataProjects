@@ -17,18 +17,19 @@ connection = MySQLdb.connect(host='localhost',user='root',passwd='admin',db='tes
 connection.autocommit(True)
 cursor = connection.cursor()
 
-# cleans up (removes) previous table.
+# cleans up (removes) previous table (if it exists).
 command = "DROP TABLE IF EXISTS testtable1"
 cursor.execute(command)
 
-# need to break this up vertically
+# creates new table
 command = ("CREATE TABLE testtable1("
            + "row int unsigned not null auto_increment, "
            + "participant int unsigned not null, "
            + "primaryBrowser varchar(20), "
            + "browserVersion varchar(20), "
            + "operatingSystem varchar(20), "
-           + "primary key (row)) engine=innodb;")
+           + "primary key (row)) engine=innodb;"
+           )
 cursor.execute(command)
 
 # function checks a dictionary for a value, increments the value or initializes it into the dict with a count of 1

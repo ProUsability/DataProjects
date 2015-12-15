@@ -18,4 +18,4 @@
 
 #SELECT SUM(primaryBrowser='Firefox') FROM testtable1;
 
-SELECT operatingSystem, CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)), CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) from testtable1 GROUP BY operatingSystem ORDER BY operatingSystem;
+SELECT operatingSystem, CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome from testtable1 GROUP BY operatingSystem ORDER BY operatingSystem;
