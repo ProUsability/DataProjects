@@ -29,6 +29,14 @@ command = ("CREATE TABLE testtable1("
            + "primaryBrowser varchar(20), "
            + "browserVersion varchar(20), "
            + "operatingSystem varchar(20), "
+           + "youtubeFrequency varchar(10), "
+           + "netflixFrequency varchar(10), "
+           + "vimeoFrequency varchar(10), "
+           + "funnyOrDieFrequency varchar(10), "
+           + "facebookFrequency varchar(10), "
+           + "yahooFrequency varchar(10), "
+           + "liveleakFrequency varchar(10), "
+           + "huluFrequency varchar(10), "
            + "primary key (row)) engine=innodb;"
            )
 cursor.execute(command)
@@ -73,7 +81,7 @@ with open(pfile, 'rb') as csvfile:
     
     for line in lines:
         print line
-        print len(line)
+        #print len(line)
         
         count += 1
         #print count
@@ -89,6 +97,16 @@ with open(pfile, 'rb') as csvfile:
         if count == 1:
             continue
         elif count == 2:
+            
+            youtubeIndex = line.index("YouTube")
+            netflixIndex = line.index("Netflix")
+            vimeoIndex = line.index("Vimeo")
+            funnyOrDieIndex = line.index("Funny Or Die")	
+            facebookIndex = line.index("Facebook")
+            yahooIndex = line.index("Yahoo")
+            liveleakIndex = line.index("Liveleak")
+            huluIndex = line.index("Hulu")
+            
             continue
         else:
             # user_agent library for deciphering strings
@@ -144,7 +162,14 @@ with open(pfile, 'rb') as csvfile:
                     dictionaryIncrementer(plugin,ffxPlugins)
                 
             
-            
+            youtubeFrequency = line[youtubeIndex]
+            netflixFrequency = line[netflixIndex]
+            vimeoFrequency = line[vimeoIndex]
+            funnyOrDieFrequency = line[funnyOrDieIndex]
+            facebookFrequency = line[facebookIndex]
+            yahooFrequency = line[yahooIndex]
+            liveleakFrequency = line[liveleakIndex]
+            huluFrequency = line[huluIndex]            
             
             # Find the longest data value per column to make uploading to mysql easier
             
@@ -157,15 +182,33 @@ with open(pfile, 'rb') as csvfile:
             + "secondsTOT=%s,"
             + "primaryBrowser='%s',"
             + "browserVersion='%s',"
-            + "operatingSystem='%s';"
-            )
+            + "operatingSystem='%s',"
+            + "youtubeFrequency='%s',"
+            + "netflixFrequency='%s',"
+            + "vimeoFrequency='%s',"
+            + "funnyOrDieFrequency='%s',"
+            + "facebookFrequency='%s',"
+            + "yahooFrequency='%s',"
+            + "liveleakFrequency='%s',"
+            + "huluFrequency='%s'"
+            +";")
             
             # populates mysql template with data for row insertion            
             insertCommand = insertCommand % (participant,
                                              secondsSpent,
                                              prefBrowser,
                                              version,
-                                             osFamily)
+                                             osFamily,
+                                             # Video watching services frequency
+                                             youtubeFrequency,
+                                             netflixFrequency,
+                                             vimeoFrequency,
+                                             funnyOrDieFrequency,	
+                                             facebookFrequency,
+                                             yahooFrequency,
+                                             liveleakFrequency,
+                                             huluFrequency,                                             
+                                             )
             
             # Tries to upload row or catches and prints error
             try:
