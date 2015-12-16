@@ -22,4 +22,14 @@
 
 #SELECT AVG(secondsTOT) FROM testtable1 WHERE primaryBrowser='Firefox';
 
-SELECT AVG(secondsTOT) FROM testtable1 WHERE primaryBrowser='Chrome';
+#SELECT AVG(secondsTOT) FROM testtable1 WHERE primaryBrowser='Chrome';
+
+#I shouldn't be doing this manually. There's got to be a way to automate this...
+SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, youtubeFrequency FROM testtable1 GROUP BY youtubeFrequency ORDER BY FIND_IN_SET(youtubeFrequency, 'Never,Monthly,Weekly,Daily');
+SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, netflixFrequency FROM testtable1 GROUP BY netflixFrequency ORDER BY FIND_IN_SET(netflixFrequency, 'Never,Monthly,Weekly,Daily');
+SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, vimeoFrequency FROM testtable1 GROUP BY vimeoFrequency ORDER BY FIND_IN_SET(vimeoFrequency, 'Never,Monthly,Weekly,Daily');
+SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, funnyOrDieFrequency FROM testtable1 GROUP BY funnyOrDieFrequency ORDER BY FIND_IN_SET(funnyOrDieFrequency, 'Never,Monthly,Weekly,Daily');
+SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, facebookFrequency FROM testtable1 GROUP BY facebookFrequency ORDER BY FIND_IN_SET(facebookFrequency, 'Never,Monthly,Weekly,Daily');
+SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, yahooFrequency FROM testtable1 GROUP BY yahooFrequency ORDER BY FIND_IN_SET(yahooFrequency, 'Never,Monthly,Weekly,Daily');
+SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, liveleakFrequency FROM testtable1 GROUP BY liveleakFrequency ORDER BY FIND_IN_SET(liveleakFrequency, 'Never,Monthly,Weekly,Daily');
+SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, huluFrequency FROM testtable1 GROUP BY huluFrequency ORDER BY FIND_IN_SET(huluFrequency, 'Never,Monthly,Weekly,Daily');
