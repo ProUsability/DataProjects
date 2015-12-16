@@ -29,16 +29,19 @@ ddf2 = melt(data, id='operatingSystem')
 ggplot(ddf2, aes(x=operatingSystem, y=value, fill=variable))+geom_bar(stat='identity', position='dodge')
 
 
-#video watching frequency. Lost the order specified in the query. Need to order by increasing frequency rather than alphabetically
+#video watching frequency.
+#fixed frequency ordering frequency! thanks to: https://kohske.wordpress.com/2010/12/29/faq-how-to-order-the-factor-variables-in-ggplot2/
 
 #youtube
 data <- dbGetQuery(con, "SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, youtubeFrequency FROM testtable1 GROUP BY youtubeFrequency ORDER BY FIND_IN_SET(youtubeFrequency, 'Never,Monthly,Weekly,Daily');")
 ddf2 = melt(data, id='youtubeFrequency')
+ddf2$youtubeFrequency <- factor(data$youtubeFrequency, as.character(data$youtubeFrequency))
 ggplot(ddf2, aes(x=youtubeFrequency, y=value, fill=variable))+geom_bar(stat='identity', position='dodge')
 
 #netflix
 data <- dbGetQuery(con, "SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, netflixFrequency FROM testtable1 GROUP BY netflixFrequency ORDER BY FIND_IN_SET(netflixFrequency, 'Never,Monthly,Weekly,Daily');")
 ddf2 = melt(data, id='netflixFrequency')
+ddf2$netflixFrequency <- factor(data$netflixFrequency, as.character(data$netflixFrequency))
 ggplot(ddf2, aes(x=netflixFrequency, y=value, fill=variable))+geom_bar(stat='identity', position='dodge')
 
 
