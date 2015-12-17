@@ -6,7 +6,7 @@
 
 #CREATE TABLE testtable1;
 
-#SELECT * FROM testtable1;
+SELECT * FROM testtable1;
 
 #INSERT INTO testtable1 SET participant=45, primaryBrowser='Firefox', browserVersion='31',operatingSystem='Windows 7';
 
@@ -33,3 +33,11 @@ SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentF
 SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, yahooFrequency FROM testtable1 GROUP BY yahooFrequency ORDER BY FIND_IN_SET(yahooFrequency, 'Never,Monthly,Weekly,Daily');
 SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, liveleakFrequency FROM testtable1 GROUP BY liveleakFrequency ORDER BY FIND_IN_SET(liveleakFrequency, 'Never,Monthly,Weekly,Daily');
 SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, huluFrequency FROM testtable1 GROUP BY huluFrequency ORDER BY FIND_IN_SET(huluFrequency, 'Never,Monthly,Weekly,Daily');
+
+SELECT COUNT(*), primaryBrowser, browserSwitchFrequency FROM testtable1 GROUP BY primaryBrowser, browserSwitchFrequency;
+
+SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, browserSwitchFrequency FROM testtable1 GROUP BY browserSwitchFrequency ORDER BY browserSwitchFrequency;
+
+SELECT COUNT(*), primaryBrowser, flashBlockFrequency FROM testtable1 GROUP BY primaryBrowser, flashBlockFrequency;
+
+SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, flashBlockFrequency FROM testtable1 GROUP BY flashBlockFrequency ORDER BY flashBlockFrequency;

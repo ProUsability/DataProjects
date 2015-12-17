@@ -26,12 +26,20 @@ command = ("CREATE TABLE testtable1("
            + "row int unsigned not null auto_increment, "
            + "participant int unsigned not null, "
            + "secondsTOT int unsigned not null, "
+           
            + "primaryBrowser varchar(20), "
            + "browserVersion varchar(20), "
            + "operatingSystem varchar(20), "
+           
+           + "hasFlash varchar(10),"
+           + "flashVersion varchar(15),"
+           + "flashBlockFrequency varchar(20),"
+           
            + "pluginsReported int unsigned not null, "
            + "pluginsCounted int unsigned not null, "
+           
            + "browserSwitchFrequency varchar(20), "
+           
            + "youtubeFrequency varchar(10), "
            + "netflixFrequency varchar(10), "
            + "vimeoFrequency varchar(10), "
@@ -133,7 +141,12 @@ with open(pfile, 'rb') as csvfile:
                 notPrimary += 1
                 continue                
             
+            hasFlash = line[14] # gets flash boolean
+            flashVersion = line[15] # gets flash version
+            flashBlockFrequency = line[43] # gets flash block frequency
+            
             repNumPlugins = int(line[16]) # gets the number of plugins reported in the csv file
+            
             
             browserSwitchFrequency = line[18] # gets 5. How often do you use another browser (e.g. [question("value"), id="83"], Edge, Safari, etc) when you want to watch videos on this computer?
             
@@ -164,6 +177,8 @@ with open(pfile, 'rb') as csvfile:
                 pluginCountDisconnect += 1
                 #break
             
+            # Counts using dictionary
+            '''         
             if prefBrowser == 'Chrome':
                 dictionaryIncrementer(browserVersion,crBrowserVersion) # counts browser version
                 dictionaryIncrementer(osFamily,crOS) # counts operating system family
@@ -174,8 +189,8 @@ with open(pfile, 'rb') as csvfile:
                 dictionaryIncrementer(osFamily,ffxOS)
                 for plugin in plugins:
                     dictionaryIncrementer(plugin,ffxPlugins)
-                
-            
+            '''
+
             youtubeFrequency = line[youtubeIndex]
             netflixFrequency = line[netflixIndex]
             vimeoFrequency = line[vimeoIndex]
@@ -194,12 +209,20 @@ with open(pfile, 'rb') as csvfile:
             insertCommand = ("INSERT INTO testtable1 SET "
             + "participant=%s,"
             + "secondsTOT=%s,"
+            
             + "primaryBrowser='%s',"
             + "browserVersion='%s',"
             + "operatingSystem='%s',"
+            
+            + "hasFlash='%s',"
+            + "flashVersion='%s',"
+            + "flashBlockFrequency='%s',"            
+             
             + "pluginsReported=%s, "
             + "pluginsCounted=%s, "
+            
             + "browserSwitchFrequency='%s', "
+            
             + "youtubeFrequency='%s',"
             + "netflixFrequency='%s',"
             + "vimeoFrequency='%s',"
@@ -213,12 +236,21 @@ with open(pfile, 'rb') as csvfile:
             # populates mysql template with data for row insertion            
             insertCommand = insertCommand % (participant,
                                              secondsSpent,
+                                             
                                              prefBrowser,
                                              browserVersion,
                                              osFamily,
+                                             
+                                             hasFlash,
+                                             flashVersion,
+                                             flashBlockFrequency,
+                                             
+                                             
                                              repNumPlugins,
                                              countNumPlugins,
+                                             
                                              browserSwitchFrequency,
+                                             
                                              # Video watching services frequency
                                              youtubeFrequency,
                                              netflixFrequency,
