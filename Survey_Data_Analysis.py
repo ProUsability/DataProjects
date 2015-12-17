@@ -29,6 +29,9 @@ command = ("CREATE TABLE testtable1("
            + "primaryBrowser varchar(20), "
            + "browserVersion varchar(20), "
            + "operatingSystem varchar(20), "
+           + "pluginsReported int unsigned not null, "
+           + "pluginsCounted int unsigned not null, "
+           + "browserSwitchFrequency varchar(20), "
            + "youtubeFrequency varchar(10), "
            + "netflixFrequency varchar(10), "
            + "vimeoFrequency varchar(10), "
@@ -57,6 +60,7 @@ notPrimary = 0
 totalSecondsSpent = 0
 sampleSize = 0
 countIntoMySQL = 0
+pluginCountDisconnect = 0
 
 ffxBrowserVersion = {}
 crBrowserVersion = {}
@@ -129,6 +133,10 @@ with open(pfile, 'rb') as csvfile:
                 notPrimary += 1
                 continue                
             
+            repNumPlugins = int(line[16]) # gets the number of plugins reported in the csv file
+            
+            browserSwitchFrequency = line[18] # gets 5. How often do you use another browser (e.g. [question("value"), id="83"], Edge, Safari, etc) when you want to watch videos on this computer?
+            
             
             operatingSystem = user_agent_ext.os # gets the operating system information
             
@@ -142,21 +150,27 @@ with open(pfile, 'rb') as csvfile:
             participant = int(line[1])
             
             # gets browser versions            
-            version = browserData.version_string
+            browserVersion = browserData.version_string
             
             # gets operating system name + version 
             osFamily = str(operatingSystem.family)
             
-            # count plugins for both browsers
+            # gets plugins for both browsers
             plugins = line[17].split(',')
+            countNumPlugins = len(plugins) #counts number of plugins reported in csv file
+            
+            if countNumPlugins != repNumPlugins:
+                print "It's a trap!"
+                pluginCountDisconnect += 1
+                #break
             
             if prefBrowser == 'Chrome':
-                dictionaryIncrementer(version,crBrowserVersion) # counts browser version
+                dictionaryIncrementer(browserVersion,crBrowserVersion) # counts browser version
                 dictionaryIncrementer(osFamily,crOS) # counts operating system family
                 for plugin in plugins:
                     dictionaryIncrementer(plugin,crPlugins) # counts plugins
             else: # if prefBrowser == 'Firefox':
-                dictionaryIncrementer(version,ffxBrowserVersion)
+                dictionaryIncrementer(browserVersion,ffxBrowserVersion)
                 dictionaryIncrementer(osFamily,ffxOS)
                 for plugin in plugins:
                     dictionaryIncrementer(plugin,ffxPlugins)
@@ -183,6 +197,9 @@ with open(pfile, 'rb') as csvfile:
             + "primaryBrowser='%s',"
             + "browserVersion='%s',"
             + "operatingSystem='%s',"
+            + "pluginsReported=%s, "
+            + "pluginsCounted=%s, "
+            + "browserSwitchFrequency='%s', "
             + "youtubeFrequency='%s',"
             + "netflixFrequency='%s',"
             + "vimeoFrequency='%s',"
@@ -197,8 +214,11 @@ with open(pfile, 'rb') as csvfile:
             insertCommand = insertCommand % (participant,
                                              secondsSpent,
                                              prefBrowser,
-                                             version,
+                                             browserVersion,
                                              osFamily,
+                                             repNumPlugins,
+                                             countNumPlugins,
+                                             browserSwitchFrequency,
                                              # Video watching services frequency
                                              youtubeFrequency,
                                              netflixFrequency,
@@ -222,6 +242,7 @@ with open(pfile, 'rb') as csvfile:
 
 
 print 'Inserted into MySQL: ' + str(countIntoMySQL)
+print 'Detected ' + str(pluginCountDisconnect) + ' disconnects in the number of plugins reported:listed.'
 print 'All done!'
 
 

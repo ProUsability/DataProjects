@@ -51,3 +51,6 @@ ggplot(ddf2, aes(x=netflixFrequency, y=value, fill=variable))+geom_bar(stat='ide
 #SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, yahooFrequency FROM testtable1 GROUP BY yahooFrequency ORDER BY FIND_IN_SET(yahooFrequency, 'Never,Monthly,Weekly,Daily');
 #SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, liveleakFrequency FROM testtable1 GROUP BY liveleakFrequency ORDER BY FIND_IN_SET(liveleakFrequency, 'Never,Monthly,Weekly,Daily');
 #SELECT CAST(100*(SUM(primaryBrowser='Firefox')/471) as decimal(5,2)) as percentFirefox, CAST(100*(SUM(primaryBrowser='Chrome')/450) as decimal(5,2)) as percentChrome, huluFrequency FROM testtable1 GROUP BY huluFrequency ORDER BY FIND_IN_SET(huluFrequency, 'Never,Monthly,Weekly,Daily');
+
+timeOnTask <- dbGetQuery(con, "SELECT secondsTOT FROM testtable1;")
+summary(timeOnTask)
