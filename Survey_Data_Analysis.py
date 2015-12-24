@@ -99,10 +99,7 @@ with open(pfile, 'rb') as csvfile:
         #print count
                 
         '''
-        MAJOR MISSING PART:
-        #####################################################################################################################
-        # Need function that reads in the first two lines then determines the questions, answer options, and their indices. #
-        #####################################################################################################################
+        Missing function that reads in the first two lines then determines the questions, answer options, and their indices. 
         
         '''
         
